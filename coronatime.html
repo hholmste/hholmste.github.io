@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="refresh" content="40000">
+	<link rel="stylesheet" href="corona.css" />
+	<script>
+		function calculateDoom() {
+			const oneDayInMs = 1000*60*60*24;
+			const startdato = Date.parse('13 Mar 2020 00:00:00 GMT');
+			const presumedEndDate = Date.parse('13 Apr 2020 23:59:59 GMT');
+			const now = Date.now();
+			const daysInPurgatory = (now - startdato) / oneDayInMs;
+			const daysLeftInPurgatory = (presumedEndDate - now) / oneDayInMs;
+
+			document.getElementById("behind").innerHTML = daysInPurgatory.toFixed(0);
+			document.getElementById("ahead").innerHTML = daysLeftInPurgatory.toFixed(0);
+		}
+	
+		</script>
+</head>
+<body>
+	<div id="behind"></div> behind
+	<div id="ahead"></div> ahead
+	<script>
+		calculateDoom();
+	</script>
+</body>
+</html>
