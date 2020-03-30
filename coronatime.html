@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="refresh" content="40000">
-	<link rel="stylesheet" href="corona.css" />
+	<link rel="stylesheet" href="coronatime.css" />
 	<script>
 		function calculateDoom() {
 			const oneDayInMs = 1000*60*60*24;
@@ -12,15 +12,17 @@
 			const daysInPurgatory = (now - startdato) / oneDayInMs;
 			const daysLeftInPurgatory = (presumedEndDate - now) / oneDayInMs;
 
-			document.getElementById("behind").innerHTML = daysInPurgatory.toFixed(0);
-			document.getElementById("ahead").innerHTML = daysLeftInPurgatory.toFixed(0);
+			document.getElementById("behind").innerHTML = "<span class='numbre' id='back'>" + daysInPurgatory.toFixed(0) + "</span> behind us";
+			document.getElementById("ahead").innerHTML = "<span class='numbre' id='front'>" + daysLeftInPurgatory.toFixed(0) + "</span> or more ahead of us";
 		}
 	
 		</script>
 </head>
 <body>
-	<div id="behind"></div> behind
-	<div id="ahead"></div> ahead
+	<div class="content">
+		<div id="behind"></div>
+		<div id="ahead"></div>
+	</div>
 	<script>
 		calculateDoom();
 	</script>

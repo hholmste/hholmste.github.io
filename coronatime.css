@@ -1,0 +1,15 @@
+body, html {
+	background: black;
+	color: white;
+	height: 100%;
+	display: grid;
+}
+
+.content {
+	margin: auto;
+}
+
+.numbre {
+	font: sans-serif;
+	font-size: 12em;
+}
