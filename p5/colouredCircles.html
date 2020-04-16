@@ -1,0 +1,48 @@
+<!doctype="html">
+<html>
+<head>
+	<title>litt drodling</title>
+
+	<script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.min.js"></script>
+
+	<style>
+		html, body {
+			heigth: 100%;
+		}
+		body {
+			margin: 0;
+			display: flex;
+			background: linear-gradient(145deg, #89cff0, #459bb0);
+			justify-content: center;
+			align-items: center;
+		}
+		canvas {
+			border-radius: 12px;
+			border: 2px solid gray;
+			background-color: #ffffff;
+		}
+	</style>
+</head>
+<body>
+
+	<script>
+		var currentHue = 0 
+		function setup() {
+		  createCanvas(1280, 800);
+		  colorMode(HSB, 100);
+		  stroke(0, 0, 0);
+		  updateFill();
+		}
+		function updateFill() {
+			fill(currentHue, 80, 50);
+			currentHue = (currentHue + 13) % 100;
+		}
+		function draw() {
+		  if (mouseIsPressed) {
+		  	ellipse(mouseX, mouseY, 80, 80);
+		  	updateFill();		  	
+		  }
+		}
+	</script>
+</body>
+</html>
