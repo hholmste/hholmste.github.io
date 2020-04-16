@@ -1,8 +1,9 @@
 body, html {
-	background: black;
-	color: white;
+	background: #000018;
+	color: #C0B0B0;
 	height: 100%;
 	display: grid;
+    font: 1em "Arial", sans-serif;
 }
 
 .content {
@@ -10,6 +11,5 @@ body, html {
 }
 
 .numbre {
-	font: sans-serif;
-	font-size: 12em;
+    font-size: 12em;
 }
