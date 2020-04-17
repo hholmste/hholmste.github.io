@@ -107,7 +107,6 @@ console.log("### p5.collide ###"),p5.prototype._collideDebug=!1,p5.prototype.col
 				const thisactualdeltax = thisdeltax * thiscoefficient;
 				const thisactualdeltay = thisdeltay * thiscoefficient;
 				
-
 				const thatdeltax = -1 * otherDot.deltaX + this.deltaX;
 				const thatdeltay = -1 * otherDot.deltaY + this.deltaY;
 				const thatmomentum = abs(otherDot.deltaX) + abs(otherDot.deltaY);
@@ -133,6 +132,9 @@ console.log("### p5.collide ###"),p5.prototype._collideDebug=!1,p5.prototype.col
 		  bounds.push(new BoundingBox((width / 2) - 15,	     			0,    	  	  width, (height / 2) + 15));
 		  bounds.push(new BoundingBox(				 0,	(height / 2) - 15, (width / 2) + 15,            height));
 		  bounds.push(new BoundingBox((width / 2) - 15, (height / 2) - 15, 		   	  width,            height));
+		  while(dots.length < 250) {
+		  	dots.push(new Dot(random(width), random(height)));
+		  }
 		}
 		function mouseClicked() {
 			dots.push(new Dot(mouseX, mouseY));	
