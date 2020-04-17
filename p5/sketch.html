@@ -26,36 +26,114 @@
 <body>
 
 	<script>
+		class BoundingBox {
+			constructor(topLeftX, topLeftY, bottomRightX, bottomRightY) {
+				this.x1 = topLeftX;
+				this.x2 = bottomRightX;
+				this.y1 = topLeftY;
+				this.y2 = bottomRightY;
+				this.mydots = [];
+			}
+			contains(dot) {
+				return dot.locX >= this.x1 
+					&& dot.locX <= this.x2 
+					&& dot.locY <= this.y2 
+					&& dot.locY >= this.y1;
+			}
+			draw() {
+				stroke(0, 0, 0);
+				noFill();
+				rect(this.x1, this.y1, this.x2, this.y2);
+			}
+			doCollisions() {
+				this.mydots.forEach(function(left, index, array){
+					array.slice(index + 1).forEach(function(right, otherIndex, otherArray) {
+						if (left.hasCrashed(right)) {
+							left.bounce(right);
+						}
+					});
+				});
+			}
+			testDot(dot) {
+				if (this.contains(dot)) {
+					this.mydots.push(dot);					
+				}
+			}
+			clear() {
+				this.mydots = [];
+			}
+		}
 		class Dot {
 			constructor(x, y) {
+				this.hue = random(100);
+				this.diameter = 15 + random(15);
 				this.locX = x;
 				this.locY = y;
-				// these should prolly be randomized
-				this.deltaX = 1;
-				this.deltaY = 1;
+				this.deltaX = random(2) - 1;
+				this.deltaY = random(2) - 1;
 			}
 			tick() {
+				fill(this.hue, 80, 75);
 				this.locX += this.deltaX;
 				this.locY += this.deltaY;
 			}
 			draw() {
-				ellipse(this.locX, this.locY, 30, 30);
+				ellipse(this.locX, this.locY, this.diameter, this.diameter);
+			}
+			isDead() {
+				return (this.locX + this.diameter) < 0 || (this.locY + this.diameter) < 0 || (this.locX - this.diameter) > width || (this.locY - this.diameter) > height;
+			}
+			hasCrashed(otherDot) {
+				return this.distance(otherDot) <= 0.5*(otherDot.diameter + this.diameter);
+			}
+			distance(otherDot) {
+				console.log(dist(this.locX, this.locY, otherDot.locX, otherDot.locY));
+				return dist(this.locX, this.locY, otherDot.locX, otherDot.locY);
+			}
+			// TODO: This is still wrong
+			bounce(otherDot) {
+				this.deltaX = -1 * this.deltaX;
+				otherDot.deltaX = -1 * otherDot.deltaX;
+				this.deltaY = -1 * this.deltaY;
+				otherDot.deltaY = -1 * otherDot.deltaY;
 			}
 		}
-		let dots = []
+		let dots = [];
+		let bounds = [];
+		
 
 		function setup() {
 		  createCanvas(1280, 800);
 		  colorMode(HSB, 100);
 		  stroke(0, 0, 0);
-		  fill(30, 80, 50);
+		  bounds.push(new BoundingBox(				 0,					0, (width / 2) + 15, (height / 2) + 15));
+		  bounds.push(new BoundingBox((width / 2) - 15,	     			0,    	  	  width, (height / 2) + 15));
+		  bounds.push(new BoundingBox(				 0,	(height / 2) - 15, (width / 2) + 15,            height));
+		  bounds.push(new BoundingBox((width / 2) - 15, (height / 2) - 15, 		   	  width,            height));	  
 		}
+		function mouseClicked() {
+			dots.push(new Dot(mouseX, mouseY));	
+		}
+
 		function draw() {
 		  background(0, 0, 100);
-		  if (mouseIsPressed) {
-		  	dots.push(new Dot(mouseX, mouseY));
-		  }
-		  dots.forEach(function(item, index, array) { item.tick(); item.draw(); });
+		  let stillLiving = [];
+		  bounds.forEach(function(box, index, array) {
+		  	dots.forEach(function(dot, otherIndex, otherArray) {
+		  		box.testDot(dot);
+		  	});
+		  	box.doCollisions();
+		  	box.clear();
+		  });
+		  dots.forEach(function(item, index, array) { 
+		  	item.tick();
+		  	item.draw();
+		  	if (!item.isDead()) {
+		  		stillLiving.push(item);
+		  	}
+		  });
+
+		  dots = stillLiving;
 		}
 	</script>
 </body>
