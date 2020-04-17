@@ -97,22 +97,29 @@ console.log("### p5.collide ###"),p5.prototype._collideDebug=!1,p5.prototype.col
 			hasCrashed(otherDot) {
 				return collideCircleCircle(this.locX,this.locY,this.diameter, otherDot.locX, otherDot.locY, otherDot.diameter);
 			}
-			distance(otherDot) {
-				console.log(dist(this.locX, this.locY, otherDot.locX, otherDot.locY));
-				return dist(this.locX, this.locY, otherDot.locX, otherDot.locY);
-			}
 			// TODO: This is even more wrong
 			bounce(otherDot) {
-				const thisdeltax = -1 * this.deltaX + 0.5*otherDot.deltaX;
-				const thisdeltay = -1 * this.deltaY + 0.5*otherDot.deltaY;
+				const thisdeltax = -1 * this.deltaX + otherDot.deltaX;
+				const thisdeltay = -1 * this.deltaY + otherDot.deltaY;
+				const thismomentum = abs(this.deltaX) + abs(this.deltaY);
+				const thisnewmomentum = abs(thisdeltax) + abs(thisdeltay);
+				const thiscoefficient = thismomentum / thisnewmomentum;
+				const thisactualdeltax = thisdeltax * thiscoefficient;
+				const thisactualdeltay = thisdeltay * thiscoefficient;
+				
 
-				const thatdeltax = -1 * otherDot.deltaX + 0.5*this.deltaX;
-				const thatdeltay = -1 * otherDot.deltaY + 0.5*this.deltaY;
+				const thatdeltax = -1 * otherDot.deltaX + this.deltaX;
+				const thatdeltay = -1 * otherDot.deltaY + this.deltaY;
+				const thatmomentum = abs(otherDot.deltaX) + abs(otherDot.deltaY);
+				const thatnewmomentum = abs(thatdeltax) + abs(thatdeltay);
+				const thatcoefficient = thatmomentum / thatnewmomentum;
+				const thatactualdeltax = thatdeltax * thatcoefficient;
+				const thatactualdeltay = thatdeltay * thatcoefficient;
 
-				this.deltaX = thisdeltax;
-				this.deltaY = thisdeltay;
-				otherDot.deltaX = thatdeltax;
-				otherDot.deltaY = thatdeltay;
+				this.deltaX = thisactualdeltax;
+				this.deltaY = thisactualdeltay;
+				otherDot.deltaX = thatactualdeltax;
+				otherDot.deltaY = thatactualdeltay;
 			}
 		}
 		let dots = [];
