@@ -40,46 +40,59 @@ console.log("### p5.collide ###"),p5.prototype._collideDebug=!1,p5.prototype.col
 <body>
 
 	<script>
-		let swirl = 0;
-		let count = 0;
-		let colors = [];
-		let maxDots = 1300;
-		let smallCount = 0;
+		class SwirlyWoo {
+			constructor() {
+				this.locX = random(width);
+				this.locY = 0;
+				this.hue = random(100);
+				this.deltaY = 1 + random(5)
+				this.rotation = 0;
+				this.size = 25 + random(50);
+			}
+			tick() {
+				this.rotation = (this.rotation + 0.1) % (2 * Math.PI);
+				this.locY += this.deltaY;
+			}
+			draw() {
+				fill(this.hue, 80, 80, 50);
+				push();
+				let xVariant = this.size * Math.sin((this.locY / 15));
+				translate(this.locX - this.size / 2 + xVariant, this.locY - this.size / 2);
+				rotate(this.rotation);
+				rect(-this.size / 2, -this.size / 2, this.size, this.size, 10, 10);
+				pop();
+			}
+			isDead() {
+				return this.locY > height + this.size;
+			}
+		}
+		
+		let swirlies = []
+
 		function setup() {
 		  createCanvas(1280, 800);
 		  frameRate(24);
-		  colorMode(HSB, 100);
+		  colorMode(HSB, 100);;
 		  strokeWeight(4);
-		  stroke(0, 0, 0, 100);
-		  let c = 0;
-		  while (c < maxDots) {
-		  	colors.push(random(100));
-		  	c++;
-		  }
+		  swirles = fillUpWithSwirlies([]);
 		}
-		
+
+		function fillUpWithSwirlies(alreadyThing) {
+			let things = Array.from(alreadyThing);
+		  	while(things.length < 75) {
+		  		things.push(new SwirlyWoo());
+		  	}
+		  	return things;
+		}
+
 		function draw() {
-			background(0, 0, 0);
-			let x = width / 2;
-			let y = height / 2;
-			swirl += 0.01;
-			smallCount = (smallCount + 0.001) % 3;
-			count = 0;
-			push();
-			translate(width / 2, height / 2);
-			rotate(swirl);
-			while (count < maxDots) {
-	    		stroke(colors[maxDots - count - 1], 40, 100, 100);
-				fill(colors[count], 40, 100, 100);
-				push();
-				translate(x - width/2, y - height / 2);
-				ellipse(0, 0, 40 - (30 * ((maxDots - count) / maxDots)));
-				pop();
-				x += count * cos(count * smallCount);
-				y += count * sin(count * smallCount);
-				count++;
-			}
-			pop();
+			background(0, 0, 100);
+			const working = Array.from(swirlies);
+			working.forEach(function(swirlywoo, index, array) {
+				swirlywoo.tick();
+				swirlywoo.draw();
+			});
+			swirlies = fillUpWithSwirlies(working.filter(swirly => !swirly.isDead()));
 		}
 	</script>
 </body>
