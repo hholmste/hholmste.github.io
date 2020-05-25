@@ -40,109 +40,32 @@ console.log("### p5.collide ###"),p5.prototype._collideDebug=!1,p5.prototype.col
 <body>
 
 	<script>
-		let maxX = 110;
-		let maxY = 77;
-		let cells = [];
-
+		
+		let size = 11;
+		let time = 0;
 		function setup() {
 		  createCanvas(1280, 800);
 		  frameRate(24);
 		  colorMode(HSB, 100);
 		  noStroke();
-		  for (let x = 0; x < maxX; x++) {
-		  	cells.push([]);
-		  	for (let y = 0; y < maxY; y++) {
-		  		cells[x].push(Math.random() >= 0.5);
-		  	}
-		  }
+		  let c = 0;
 		}
-
-		let timer = 0;
-		let dev  = true
+		
 		function draw() {
-			timer += deltaTime;
-			background(0, 6, 6);
-			
-			let drawables = [];
-			for (let x = 0; x < maxX; x++) {
-				drawables.push([]);
-			  	for (let y = 0; y < maxY; y++) {
-			  		drawables[x].push(cells[x][y]);
-		  		}
-		  	}
-			for (let x = 0; x < maxX; x++) {
-			  	for (let y = 0; y < maxY; y++) {
-		  			if(drawables[x][y]) {
-		  				fill(huey(x, y), 60, 100);
-		  				rect(100 + x*10, 10 + y*10, 9, 9);
-		  				
-		  			}
-		  			//fill(59, 100, 50);
-		  			//text(countNeighbours(x, y), 100 + x*10, 20 + y*10);
-		  		}
-		  	}
-
-		  	//if (timer > 100) {
-		  		cells = updateBoard();
-		  		timer = 0;
-		  	//}
+			background(0, 0, 0);
+			time += deltaTime;
+			size = 11 + 3 * cos(time / 5000);
+			let x = 0;
+			while (x < 100) {
+				let y = 0;
+				while (y < 50) {
+					fill(x, y*2, 100);
+					square(x*size, y*size, size, size);
+					y++;
+				}
+				x++;
+			}
 		}
-
-		function huey(x, y) {
-			return (x * 31 + y * 127) % 101;
-		}
-
-		function updateBoard() {
-			let nuCells = [];
-			for (let x = 0; x < maxX; x++) {
-				nuCells.push([]);
-			  	for (let y = 0; y < maxY; y++) {
-			  		// if you have three live neighbours: you live
-			  		// you you have two live neighbours: you stay alive, but you don't get born
-			  		// otherwise you die
-			  		let n = countNeighbours(x, y);
-			  		if (n == 3) {
-			  			nuCells[x].push(true);	
-			  		} else if (n != 2) {
-			  			nuCells[x].push(false);
-			  		} else {
-			  			nuCells[x].push(cells[x][y]);
-			  		}
-			  	}
-    		}
-    		return nuCells;
-	    }
-
-	    function countNeighbours(x, y) {
-	    	let c = 0;
-	    	c += countN(x - 1, y - 1);
-	    	c += countN(x,     y - 1);
-	    	c += countN(x + 1, y - 1);
-	    	c += countN(x - 1, y);
-	    	c += countN(x + 1, y);
-	    	c += countN(x - 1, y + 1);
-	    	c += countN(x    , y + 1);
-	    	c += countN(x + 1, y + 1);
-	    	//console.log("c = " + c + " at " + x + " , " + y);
-	    	return c;
-	    }
-
-
-	    function countN(posX, posY) {
-	    	if (posX < 0) {
-	    		posX = maxX - 1;
-	    	}
-	    	if (posX >= maxX) {
-	    		posX = 0;
-	    	}
-	    	if (posY < 0) {
-	    		posY = maxY - 1;
-	    	}
-	    	if (posY >= maxY) {
-	    		posY = 0;
-	    	}
-	    	return cells[posX][posY] ? 1 : 0;
-	    }
 	</script>
 </body>
 </html>
