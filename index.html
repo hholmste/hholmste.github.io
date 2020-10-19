@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Counts</title>
+        <style>
+            .tid {
+                padding-right: 0.2em;
+            }
+            html, body, #karusell {
+                height: 100%;
+                font-family: 'Courier New', Courier, monospace;
+                background-color: aliceblue;
+            }
+            .periode {
+                color: black;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-size: 3em;
+            }
+            .karusell {
+                position: relative;
+                padding-top: 75%;
+                filter: drop-shadow(0, 0, 10px, #0003);
+                perspective: 100px;
+            }
+            
+        </style>
+        <script>
+            let template = "<span class='aar'></span><span class='uker'></span><span class='dager'></span>";
+            class Periode {
+                constructor(startDate, endDate, text) {
+                    this.startDate = startDate;
+                    this.endDate = endDate;
+                    this.text = text;
+                }
+                round(number) { if (number > 0) return Math.floor(number); else return Math.ceil(number); }
+                timer(sub = 0) { return this.round((this.endDate - this.startDate) / (1000 * 60 * 60)) - sub; }
+                dager() { return this.round(this.timer(this.aarSomTimer() + this.ukerSomTimer()) / 24); }
+                dagtekst(num) { if (num > 1 || num < -1) return "dager"; else return "dag"; }
+                uker() { return this.round(this.timer(this.aarSomTimer()) / (24 * 7)); }
+                uketekst(num) { if (num > 1 || num < -1) return "uker"; else return "uke"; } 
+                aar() { return this.round(this.timer() / (24 * 365)); }
+                aarSomTimer() { return this.aar() * 52 * 7 * 24; }
+                ukerSomTimer() { return this.uker() * 7 * 24; }
+                appendage() { if (this.startDate > this.endDate) return "til"; else return "siden"; }
+                
+                buildDOM() {
+                    let parent = document.createElement("div");
+                    parent.classList.add("periode");
+                    this._add(parent, this.aar(), "år");
+                    this._add(parent, Math.abs(this.uker()), this.uketekst(this.uker()));
+                    this._add(parent, Math.abs(this.dager()), this.dagtekst(this.dager()));
+                    let postfix = document.createElement("span");
+                    postfix.classList.add("postfix")
+                    postfix.innerHTML = this.appendage() + " " + this.text;
+                    parent.appendChild(postfix);
+                    return parent;
+                }
+                
+                _add(parent, mengde, klassifisering) {
+                    if (mengde != 0) {
+                        let span = document.createElement("span");
+                        span.classList.add("tid");
+                        span.classList.add(klassifisering);
+                        span.innerHTML = mengde + " " + klassifisering;
+                        parent.appendChild(span);
+                    }
+                }
+            }
+
+            function add(date, text) {
+                document.getElementById("karusell").appendChild(new Periode(date, new Date(Date.now()), text).buildDOM());
+            }               
+
+        </script>
+    </head>
+    <body>
+        <section id="karusell">
+            
+        </section>
+        <script>
+            add(new Date("March 13, 2020"), "lockdown.");
+            add(new Date("November 3, 2020"), "valget i USA.");
+            add(new Date("November 11, 2015"), "Ellie ble født.");
+            add(new Date("November 11, 2020"), "Ellie sin femårsdag.");
+            add(new Date("April 13, 2017"), "Hugo ble født.");
+            add(new Date("April 13, 2021"), "Hugo sin treårsdag.");
+            add(new Date("December 31, 2020"), "Brexit")
+        </script>
+        <script>
+            let ellie = new Periode(new Date("November 11, 2015"), Date.now(), "test");
+            let hugo = new Periode(new Date("April 13, 2017"), Date.now(), "test");
+        </script>
+    </body>
+</html>
