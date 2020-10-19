@@ -3,29 +3,41 @@
     <head>
         <title>Counts</title>
         <style>
-            .tid {
-                padding-right: 0.2em;
-            }
-            html, body, #karusell {
-                height: 100%;
+            html {
                 font-family: 'Courier New', Courier, monospace;
                 background-color: aliceblue;
             }
+            html, body, #karusell {
+                height: 100%;
+            }
+            body {
+                counter-reset: jabba;
+            }
             .periode {
-                color: black;
                 width: 100%;
                 height: 100%;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                font-size: 3em;
+                font-size: 5em;
+                counter-increment: jabba;
             }
-            .karusell {
-                position: relative;
-                padding-top: 75%;
-                filter: drop-shadow(0, 0, 10px, #0003);
-                perspective: 100px;
+            div.periode > .postfix {
+                color: orangered;
+            }
+            div.periode > .tid {
+                padding-right: 0.2em;
+                color: firebrick;
+            }
+            .periode:nth-child(even) {
+                background-color: palegoldenrod;
+            }
+            .periode:nth-child(even)  > .tid {
+                color: darkgreen;
+            }
+            .periode:nth-child(even)  > .postfix {
+                color: green;
             }
             
         </style>
@@ -89,7 +101,8 @@
             add(new Date("November 11, 2020"), "Ellie sin femårsdag.");
             add(new Date("April 13, 2017"), "Hugo ble født.");
             add(new Date("April 13, 2021"), "Hugo sin treårsdag.");
-            add(new Date("December 31, 2020"), "Brexit")
+            add(new Date("December 31, 2020"), "Brexit.")
+            add(new Date("September 8, 2004"), "<3")
         </script>
         <script>
             let ellie = new Periode(new Date("November 11, 2015"), Date.now(), "test");
