@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+<title>SNØHØNS</title>
+<style>
+	div {
+		font-family: sans-serif;
+		width: 5em;
+		margin: auto;
+		padding-top: 100px;
+		animation: 6s infinite normal rotarota;
+	}
+
+  @keyframes rotarota {
+  	from {
+  		transform: rotate3d(0, 0, 0, 0deg);
+  	}
+  	17% {
+  		transform: rotate3d(1, 0, 0, 180deg);
+  	}
+  	34% {
+  		transform: rotate3d(1, 0, 0, 0deg);
+  	}
+  	51% {
+  		transform: rotate3d(0, 1, 0, 180deg);
+  	}
+  	68% {
+  		transform: rotate3d(0, 1, 0, 0deg);
+  	}
+  	85% {
+  		transform: rotate3d(0, 0, 1, 180deg);
+  	}
+  	95% {
+  		transform: rotate3d(0, 0, 1, 0deg);
+  	}
+  	to {
+  		transform: rotate3d(0, 0, 0, 0deg);
+  	}
+  }
+</style>
+</head>
+<body>
+<div class="rotated">SNØHØNS</div>
+</body>
+</html>
