@@ -46,7 +46,7 @@
                 }
                 round(number) { if (number > 0) return Math.floor(number); else return Math.ceil(number); }
                 timer(sub = 0) { return this.round((this.endDate - this.startDate) / (1000 * 60 * 60)) - sub; }
-                dager() { return 1 + this.round(this.timer(this.aarSomTimer() + this.ukerSomTimer()) / 24); }
+                dager() { return this.round(this.timer(this.aarSomTimer() + this.ukerSomTimer()) / 24) - 1; }
                 dagtekst(num) { if (num > 1 || num < -1) return "dager"; else return "dag"; }
                 uker() { return this.round(this.timer(this.aarSomTimer()) / (24 * 7)); }
                 uketekst(num) { if (num > 1 || num < -1) return "uker"; else return "uke"; } 
