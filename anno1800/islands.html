@@ -9,35 +9,51 @@
 		"population": 10,
 		"needs": {
 			"basic": [
-					{ "Fish": 0.0004166667 },
-					{ "Work Clothes": 0.000512821 }
+					{ "name": "Fish", "perHouse": 0.0004166667 },
+					{ "name": "Work Clothes", "perHouse": 0.000512821 }
 				],
 			"luxury": [
-					{ "Schnapps": 0.000555556 }
+					{ "name": "Schnapps", "perHouse": 0.000555556 }
 				],
 			"lifestyle": [
-					{ "Local Mail": 0.000266667  },
-					{ "Regional Mail": 0.000133333  },
-					{ "Overseas Mail": 0.00005 },
-					{ "Flour": 0.0004 },
-					{ "Sugar": 0.0002 },
-					{ "Jam": 0.0003333333 },
-					{ "Soap": 0.00005833333 },
-					{ "Herbs": 0.0002833333 },
-					{ "Hibiscus Petals": 0.0001666667 }
+					{ "name": "Local Mail", "perHouse": 0.000266667  },
+					{ "name": "Regional Mail", "perHouse": 0.000133333  },
+					{ "name": "Overseas Mail", "perHouse": 0.00005 },
+					{ "name": "Flour", "perHouse": 0.0004 },
+					{ "name": "Sugar", "perHouse": 0.0002 },
+					{ "name": "Jam", "perHouse": 0.0003333333 },
+					{ "name": "Soap", "perHouse": 0.00005833333 },
+					{ "name": "Herbs", "perHouse": 0.0002833333 },
+					{ "name": "Hibiscus Petals", "perHouse": 0.0001666667 }
 				]
 		}
 	}
 
 	function updateNeeds() {
-		console.log("nå skulle vi ha oppdatert noe greier");
+		let farmerHouseCount = document.getElementById("farmercount").value;
+		updateNeedsList("Farmer", "basic", farmerHouseCount, farmerData.needs.basic);
+		updateNeedsList("Farmer", "luxury", farmerHouseCount, farmerData.needs.luxury);
+		updateNeedsList("Farmer", "lifestyle", farmerHouseCount, farmerData.needs.lifestyle);
+
+	}
+
+	function updateNeedsList(poptype, needstype, houses, needs) {
+		needs.forEach((need) => {
+			let good = need.name;
+			let amount = need.perHouse * houses * 60.0;
+			console.log(poptype + "'s " + needstype + " need " + amount + " " + good + " per minute.")
+		});
 	}
 </script>
 </head>
 <body>
 <header><h1>Plan your island here!</h1></header>
+<summary><p>Plx note that we only deal with integers. If you need 1.0003 fish per minute, we will tell you to produce 2 fish.</p></summary>
 <section id="single_island">
-	<label for="farmercount">Farmers:</label><input type="number" name="farmercount" min="0" onchange="updateNeeds()">
+	<label for="farmercount">Farmers' Houses:</label><input type="number" name="farmercount" id="farmercount" min="0" onchange="updateNeeds()">
+</section>
+<section id="single_island_needs">
+	
 </section>
 </body>
 </html>
