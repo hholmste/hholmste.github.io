@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+<title>Anno 1800 island planner</title>
+<style type="text/css"></style>
+<script type="text/javascript">
+	let farmerData = {
+		"name": "Farmer",
+		"population": 10,
+		"needs": {
+			"basic": [
+					{ "Fish": 0.0004166667 },
+					{ "Work Clothes": 0.000512821 }
+				],
+			"luxury": [
+					{ "Schnapps": 0.000555556 }
+				],
+			"lifestyle": [
+					{ "Local Mail": 0.000266667  },
+					{ "Regional Mail": 0.000133333  },
+					{ "Overseas Mail": 0.00005 },
+					{ "Flour": 0.0004 },
+					{ "Sugar": 0.0002 },
+					{ "Jam": 0.0003333333 },
+					{ "Soap": 0.00005833333 },
+					{ "Herbs": 0.0002833333 },
+					{ "Hibiscus Petals": 0.0001666667 }
+				]
+		}
+	}
+
+	function updateNeeds() {
+		console.log("nå skulle vi ha oppdatert noe greier");
+	}
+</script>
+</head>
+<body>
+<header><h1>Plan your island here!</h1></header>
+<section id="single_island">
+	<label for="farmercount">Farmers:</label><input type="number" name="farmercount" min="0" onchange="updateNeeds()">
+</section>
+</body>
+</html>
