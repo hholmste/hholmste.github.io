@@ -2,7 +2,14 @@
 <html>
 <head>
 <title>Anno 1800 island planner</title>
-<style type="text/css"></style>
+<style type="text/css">
+	.card {
+
+	}
+	.empty {
+		display: none;
+	}
+</style>
 <script type="text/javascript">
 	let farmerData = {
 		"name": "Farmer",
@@ -30,6 +37,7 @@
 	}
 
 	function updateNeeds() {
+		resetGoods();
 		let farmerHouseCount = document.getElementById("farmercount").value;
 		updateNeedsList("Farmer", "basic", farmerHouseCount, farmerData.needs.basic);
 		updateNeedsList("Farmer", "luxury", farmerHouseCount, farmerData.needs.luxury);
@@ -41,8 +49,39 @@
 		needs.forEach((need) => {
 			let good = need.name;
 			let amount = need.perHouse * houses * 60.0;
-			console.log(poptype + "'s " + needstype + " need " + amount + " " + good + " per minute.")
+			updateGood(good, amount);
 		});
+	}
+
+	function resetGoods() {
+		Array.from(document.getElementsByClassName("card")).forEach((c) => {
+			c.amountPerMinute = 0;
+			c.classList.remove("card");
+			c.classList.add("empty");
+		});
+	}
+
+	function updateGood(good, additionalConsumption) {
+		let card = findCard(good);
+		card.amountPerMinute += additionalConsumption;
+		card.innerText = "Make at least " + Math.ceil(card.amountPerMinute) + " " + good;
+		card.classList.toggle("card", card.amountPerMinute > 0);
+		card.classList.toggle("empty", card.amountPerMinute <= 0);
+	}
+
+	function findCard(good) {
+		let id = good + "_card";
+		let old = document.getElementById(id);
+		if (old != null) return old;
+
+		let nu = document.createElement("div");
+		nu.id = id;
+		nu.amountPerMinute = 0;
+		nu.classList.add("empty");
+
+		document.getElementById("single_island_needs").appendChild(nu);
+
+		return nu;
 	}
 </script>
 </head>
@@ -53,7 +92,7 @@
 	<label for="farmercount">Farmers' Houses:</label><input type="number" name="farmercount" id="farmercount" min="0" onchange="updateNeeds()">
 </section>
 <section id="single_island_needs">
-	
+
 </section>
 </body>
 </html>
