@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>litt drodling</title>
+
+	<script src="https://cdn.jsdelivr.net/npm/p5@1.9.2/lib/p5.min.js"></script>
+	<script type="text/javascript" src="mahVectors.js">
+	</script>
+
+	<style>
+		html, body {
+			heigth: 100%;
+		}
+		body {
+			margin: 0;
+			display: flex;
+			background: linear-gradient(145deg, #89cff0, #459bb0);
+			justify-content: center;
+			align-items: center;
+		}
+		canvas {
+			border-radius: 12px;
+			border: 2px solid gray;
+			background-color: #ffffff;
+		}
+	</style>
+</head>
+<body>
+
+	<script>
+		class SwirlyWoo {
+			constructor() {
+				this.locX = random(width);
+				this.locY = 0;
+				this.hue = random(100);
+				this.deltaY = 1 + random(5);
+				this.rotationality = random(0.2);
+				this.rotation = 0;
+				this.size = 25 + random(150);
+				this.roundishness = random(1, 50);
+			}
+			tick() {
+				this.rotation = (this.rotation + this.rotationality) % (2 * Math.PI);
+				this.locY += this.deltaY;
+			}
+			draw() {
+				fill(this.hue, 80, 80, 50);
+				stroke(this.hue, 80, 80, 100)
+				push();
+				let xVariant = this.size * Math.sin((this.locY / 35));
+				translate(this.locX - this.size / 2 + xVariant, this.locY - this.size / 2);
+				rotate(this.rotation);
+				rect(-this.size / 2, -this.size / 2, this.size, this.size, this.roundishness, this.roundishness);
+				pop();
+			}
+			isDead() {
+				return this.locY > height + this.size;
+			}
+		}
+		
+		let swirlies = []
+
+		function setup() {
+		  createCanvas(1280, 800);
+		  frameRate(24);
+		  colorMode(HSB, 100);;
+		  strokeWeight(4);
+		  swirles = fillUpWithSwirlies([]);
+		}
+
+		function fillUpWithSwirlies(alreadyThing) {
+			let things = Array.from(alreadyThing);
+		  	while(things.length < 175) {
+		  		things.push(new SwirlyWoo());
+		  	}
+		  	return things;
+		}
+
+		function draw() {
+			background(12, 12, 12);
+			const working = Array.from(swirlies);
+			working.forEach(function(swirlywoo, index, array) {
+				swirlywoo.tick();
+				swirlywoo.draw();
+			});
+			swirlies = fillUpWithSwirlies(working.filter(swirly => !swirly.isDead()));
+		}
+	</script>
+</body>
+</html>

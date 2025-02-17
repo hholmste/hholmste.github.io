@@ -34,15 +34,108 @@
 					{ "name": "Hibiscus Petals", "perHouse": 0.0001666667 }
 				]
 		}
-	}
+	};
+
+	let workerData = {
+		"name": "Worker",
+		"population": 20,
+		"needs": {
+			"basic": [
+					{ "name": "Fish", "perHouse": 0.0008333334 },
+					{ "name": "Work Clothes", "perHouse": 0.001025642 },
+					{ "name": "Sausages", "perHouse": 0.000333334 },
+					{ "name": "Bread", "perHouse": 0.00030303 },
+					{ "name": "Soap", "perHouse": 0.000138889 }
+				],
+			"luxury": [
+					{ "name": "Schnapps", "perHouse": 0.001111112 },
+					{ "name": "Beer", "perHouse": 0.00025641 }
+				],
+			"lifestyle": [
+					{ "name": "Local Mail", "perHouse": 0.000541667 },
+					{ "name": "Regional Mail", "perHouse": 0.000133333 },
+					{ "name": "Overseas Mail", "perHouse": 0.000125 },
+					{ "name": "Rum", "perHouse": 0.0003333333 },
+					{ "name": "Penny Farthings", "perHouse": 0.0001333333 },
+					{ "name": "Hot Sauce", "perHouse": 0.0001666667 },
+					{ "name": "Beef", "perHouse": 0.0002083333 },
+					{ "name": "Soccer Balls", "perHouse": 0.0001666667 },
+					{ "name": "Clay Pipes", "perHouse": 0.0001666667 }
+				]
+		}
+	};
+	
+	let artisanData = {
+		"name": "Artisan",
+		"population": 30,
+		"needs": {
+			"basic": [
+					{ "name": "Sausages", "perHouse": 0.000666667 },
+					{ "name": "Bread", "perHouse": 0.000606061 },
+					{ "name": "Soap", "perHouse": 0.000277778 },
+					{ "name": "Canned Food", "perHouse": 0.00017094 },
+					{ "name": "Sewing Machines", "perHouse": 0.00047619 },
+					{ "name": "Fur Coats", "perHouse": 0.000444444 }
+				],
+			"luxury": [
+					{ "name": "Beer", "perHouse": 0.000512821 },
+					{ "name": "Rum", "perHouse": 0.000952381 }
+				],
+			"lifestyle": [
+					{ "name": "Local Mail", "perHouse": 0.000766667 },
+					{ "name": "Regional Mail", "perHouse": 0.000183333 },
+					{ "name": "Overseas Mail", "perHouse": 0.000166667 },
+					{ "name": "Wool", "perHouse": 0.001 },
+					{ "name": "Clay", "perHouse": 0.001333333 },
+					{ "name": "Paper", "perHouse": 0.0005 },
+					{ "name": "Soccer Balls", "perHouse": 0.0003333333 },
+					{ "name": "Perfumes", "perHouse": 0.000125 },
+					{ "name": "Scooter", "perHouse": 0.0001083333 }
+				]
+		}
+	};
+
+	let engineerData = {
+		"name": "Engineer",
+		"population": 40,
+		"needs": {
+			"basic": [
+					{ "name": "Canned Food", "perHouse": 0.00034188 },
+					{ "name": "Sewing Machines", "perHouse": 0.000952381 },
+					{ "name": "Fur Coats", "perHouse": 0.000888889 },
+					{ "name": "Glasses", "perHouse": 0.000148148 },
+					{ "name": "Coffee", "perHouse": 0.000784314 },
+					{ "name": "Light Bulbs", "perHouse": 0.000208333 }
+				],
+			"luxury": [
+					{ "name": "Rum", "perHouse": 0.001904762 },
+					{ "name": "Penny Farthings", "perHouse": 0.000416667 },
+					{ "name": "Pocket Watches", "perHouse": 0.000130719 }
+				],
+			"lifestyle": [
+					{ "name": "Local Mail", "perHouse": 0.001041667 },
+					{ "name": "Regional Mail", "perHouse": 0.00025 },
+					{ "name": "Overseas Mail", "perHouse": 0.0002 },
+					{ "name": "Soap", "perHouse": 0.0005208334 },
+					{ "name": "Chocolate", "perHouse": 0.00025 },
+					{ "name": "Shampoo", "perHouse": 0.0003 },
+					{ "name": "Mezcal", "perHouse": 0.00025 },
+					{ "name": "Ice Cream", "perHouse": 0.0003333333 },
+					{ "name": "Medicine", "perHouse": 0.0002777778 }
+				]
+		}
+	};
+
+	let data = [farmerData, workerData, artisanData, engineerData];
 
 	function updateNeeds() {
 		resetGoods();
-		let farmerHouseCount = document.getElementById("farmercount").value;
-		updateNeedsList("Farmer", "basic", farmerHouseCount, farmerData.needs.basic);
-		updateNeedsList("Farmer", "luxury", farmerHouseCount, farmerData.needs.luxury);
-		updateNeedsList("Farmer", "lifestyle", farmerHouseCount, farmerData.needs.lifestyle);
 
+		data.forEach((poptype) => {
+			let count = document.getElementById(poptype.name + "_count").value;
+			updateNeedsList(poptype.name, "basic", count, poptype.needs.basic);
+			updateNeedsList(poptype.name, "luxury", count, poptype.needs.luxury);
+		});
 	}
 
 	function updateNeedsList(poptype, needstype, houses, needs) {
@@ -86,10 +179,13 @@
 </script>
 </head>
 <body>
-<header><h1>Plan your island here!</h1></header>
+<header><h1>Plan your island(s) here!</h1></header>
 <summary><p>Plx note that we only deal with integers. If you need 1.0003 fish per minute, we will tell you to produce 2 fish.</p></summary>
 <section id="single_island">
-	<label for="farmercount">Farmers' Houses:</label><input type="number" name="farmercount" id="farmercount" min="0" onchange="updateNeeds()">
+	<label for="Farmer_count">Farmers' Houses:</label><input type="number" name="Farmer_count" id="Farmer_count" min="0" onchange="updateNeeds()">
+	<label for="Worker_count">Workers' Houses:</label><input type="number" name="Worker_count" id="Worker_count" min="0" onchange="updateNeeds()">
+	<label for="Artisan_count">Artisans' Houses:</label><input type="number" name="Artisan_count" id="Artisan_count" min="0" onchange="updateNeeds()">
+	<label for="Engineer_count">Engineers' Houses:</label><input type="number" name="Engineer_count" id="Engineer_count" min="0" onchange="updateNeeds()">
 </section>
 <section id="single_island_needs">
 
