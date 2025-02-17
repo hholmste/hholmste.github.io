@@ -33,13 +33,23 @@
             let template = "<span class='aar'></span><span class='uker'></span><span class='dager'></span>";
             class Periode {
                 constructor(startDate, endDate, prefix, postfix) {
+                    console.log("startdate");
+                    console.log(startDate);
+                    console.log("enddate");
+                    console.log(endDate);
                     this.startDate = startDate;
                     this.endDate = endDate;
                     this.prefix = prefix;
                     this.postfix = postfix;
                 }
                 abs_dager() { 
-                    return Math.round((this.endDate.getTime() - this.startDate.getTime()) / (24 * 3600 * 1000)) }
+                    let res = (this.endDate.getTime() - this.startDate.getTime()) / (24 * 3600 * 1000)
+                    console.log("pre round");
+                    console.log(res);
+                    console.log("post floor");
+                    console.log(Math.floor(res));
+                    return Math.floor(res) 
+                }
                 
                 buildDOM() {
                     let parent = document.createElement("div");
@@ -71,7 +81,8 @@
     <body>
         <section id="karusell"></section>
         <script>
-            add(new Date("November 14, 2023"), "Vi har jobbet med tilkommen inntekt i ", " dager")
+            // YYYY-MM-DDTHH:mm:ss.sssZ
+            add(new Date("2023-11-14T15:37:00.000Z"), "Det har gått ", " dager siden Tilkommen_Inntekt_V1")
           </script>
     </body>
 </html>
