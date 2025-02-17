@@ -20,36 +20,120 @@
                 padding-left: 2em;
                 padding-right: 2em;
             }
-            div.periode > .postfix {
+            div.periode > .tekstgreie {
                 color: #FFE3AA;
             }
             div.periode > .tid {
                 padding-right: 0.2em;
                 color: #FFFFAA;
             }
+            .tall {
+                font-size: 1.5em;
+            }
+            .pretall {
+            }
+            .astrx {
+                position: absolute;
+                font-size: 0.6em;
+            }
             
         </style>
         <script>
             let template = "<span class='aar'></span><span class='uker'></span><span class='dager'></span>";
+            class Dag {
+                constructor(dato) {
+                    this.dato = dato;
+                }
+
+                er_helg() {
+                    let day = this.dato.getDay();
+                    return day == 0 || day == 6;
+                }
+                er_arbeidsdag() {
+                   return this.er_hverdag() && !this.er_ferie();
+                }
+                er_hverdag() {
+                    return !this.er_helg();
+                }
+                er_ferie() {
+                    return false;
+                }
+                somStreng() {
+                    return `${this.dagNavn()} - ${this.er_helg()}`
+                }
+                dagNavn() {
+                    switch(this.dato.getDay()) {
+                        case 0: 
+                            return "Søndag";
+                        case 1:
+                            return "Mandag";
+                        case 2:
+                            return "Tirsdag";
+                        case 3:
+                            return "Onsdag";
+                        case 4:
+                            return "Torsdag";
+                        case 5:
+                            return "Fredag";
+                        case 6:
+                            return "Lørdag";
+                        default:
+                            return "Feil dag";
+                    }
+                }
+            }
             class Periode {
                 constructor(startDate, endDate, prefix, postfix) {
                     this.startDate = startDate;
                     this.endDate = endDate;
                     this.prefix = prefix;
                     this.postfix = postfix;
+                    this.utviklingstidslinje = [];
                 }
                 abs_dager() { 
                     let res = (this.endDate.getTime() - this.startDate.getTime()) / (24 * 3600 * 1000)
                     return Math.floor(res) 
                 }
                 
+                lag_tidslinje(start, slutt) {
+                    let res = []
+                    var current = start;
+                    while(current < slutt) {
+                        res.push(new Dag(structuredClone(current)));
+                        current.setDate(current.getDate() + 1);
+                    }
+                    return res;
+                }
+               
+                toggle_arbeidsdager() {
+                    console.log("sfg");
+                }
+
+
                 buildDOM() {
                     let parent = document.createElement("div");
                     parent.classList.add("periode");
-                    let postfix = document.createElement("span");
-                    postfix.classList.add("postfix")
-                    postfix.innerHTML = this.prefix + " " + this.abs_dager() + " " + this.postfix;
-                    parent.appendChild(postfix);
+                    let før_tall = document.createElement("span");
+                    før_tall.classList.add("pretall", "tekstgreie")
+                    før_tall.innerHTML = this.prefix;
+                    parent.appendChild(før_tall);
+                    let tall = document.createElement("span");
+                    tall.classList.add("tall", "tekstgreie");
+                    tall.innerHTML = `${this.abs_dager()}`;
+                    let astrx = document.createElement("span");
+                    astrx.classList.add("astrx", "tall", "tekstgreie");
+                    astrx.innerHTML = "*";
+                    astrx.onclick = this.toggle_arbeidsdager;
+                    tall.appendChild(astrx);
+                    parent.appendChild(tall);
+                    let etter_tall = document.createElement("span");
+                    etter_tall.classList.add("posttall", "tekstgreie");
+                    etter_tall.innerHTML = this.postfix;
+                    parent.appendChild(etter_tall);
+
+                    this.utviklingstidslinje = this.lag_tidslinje(this.startDate, this.endDate);
+                    this.logg_tidslinje();
+
                     return parent;
                 }
                 
@@ -62,6 +146,16 @@
                         parent.appendChild(span);
                     }
                 }
+
+                logg_tidslinje() {
+                    console.log(`tidslinjen har ${this.tell_arbeidsdager()} arbeidsdager`);
+                }
+
+                tell_arbeidsdager() {
+                    let arbeidsdager = this.utviklingstidslinje.filter((dag) => dag.er_arbeidsdag());
+                    return arbeidsdager.length;
+                }
+
             }
 
             function add(date, prefix, postfix) {
@@ -73,7 +167,7 @@
     <body>
         <section id="karusell"></section>
         <script>
-            add(new Date("2023-11-14T15:37:00.000+01:00"), "Det har gått ", " dager siden Tilkommen_Inntekt_V1")
+            add(new Date("2023-11-14T15:37:00.000+01:00"), "Tilkommen inntekt er ", " dager gammel")
           </script>
     </body>
 </html>
