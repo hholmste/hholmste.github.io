@@ -21,7 +21,6 @@
                 padding-right: 2em;
             }
             div.periode > .tekstgreie {
-                color: #FFE3AA;
             }
             div.periode > .tid {
                 padding-right: 0.2em;
@@ -29,12 +28,29 @@
             }
             .tall {
                 font-size: 1.5em;
+                color: #FFE3AA;
             }
             .pretall {
+                color: #FFE3AA;
             }
+            .posttall {
+                color: #FFE3AA;
+            }
+
             .astrx {
                 position: absolute;
                 font-size: 0.6em;
+                cursor: help;
+            }
+            .arbeidsdager {
+                color: #FFE3AA;
+                font-size: 0.2em;
+                margin-left: auto;
+                transition: all 1s ease-out;
+            }
+            .gjemmeseg {
+                color: #13073A;
+                transition: all 0.3s ease-out;
             }
             
         </style>
@@ -106,9 +122,8 @@
                 }
                
                 toggle_arbeidsdager() {
-                    console.log("sfg");
+                    document.getElementById("arbeidsdager").classList.toggle("gjemmeseg");
                 }
-
 
                 buildDOM() {
                     let parent = document.createElement("div");
@@ -133,6 +148,14 @@
 
                     this.utviklingstidslinje = this.lag_tidslinje(this.startDate, this.endDate);
                     this.logg_tidslinje();
+
+                    let arbeidsdager = document.createElement("div");
+                    arbeidsdager.classList.add("tekstgreie", "arbeidsdager", "gjemmeseg");
+                    arbeidsdager.setAttribute("id", "arbeidsdager");
+                    arbeidsdager.innerHTML = `Det er jo ${this.tell_arbeidsdager()} arbeidsdager!`
+
+
+                    parent.appendChild(arbeidsdager);
 
                     return parent;
                 }
