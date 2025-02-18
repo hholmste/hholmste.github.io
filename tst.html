@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <title>this is a test</title>
+<style>
+
+    html {
+        height: 99%;
+        font-family: 'Arial', sans-serif, bold;
+        display: flex;
+        flex-direction: column;
+        font-size: 6em;
+        align-items: center;
+        justify-content: center;
+    }
+    div {
+        width: 99%;
+        border: 1px solid black;
+        padding: 2em;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .blarg {
+        background: red;
+        color: black;
+    }
+    
+    .arg {
+        background: blue;
+        color: white;
+    }
+
+    .anim {
+        transition-property: background, color;
+        transition-timing-function: ease-in-out;
+        transition-duration: 5s;
+    }
+</style>
+
+    </head>
+    <body>
+        <div id="the_thing" class="arg anim">
+        This is a test
+        </div>
+<script>
+   
+    document.getElementById("the_thing").onclick = flipit;
+
+    function flipit() {
+        document.getElementById("the_thing").classList.toggle("arg");
+        document.getElementById("the_thing").classList.toggle("blarg");
+    }
+</script>
+    </body>
+</html>
