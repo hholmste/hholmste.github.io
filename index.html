@@ -43,14 +43,29 @@
                 cursor: help;
             }
             .arbeidsdager {
-                color: #FFE3AA;
                 font-size: 0.2em;
                 margin-left: auto;
-                transition: all 1s ease-out;
+                transition-property: color;
+                transition-timing-function: ease-in-out;
+                transition-duration: 1s;
             }
-            .gjemmeseg {
-                color: #13073A;
-                transition: all 0.3s ease-out;
+            .show {
+                color: #FFE3AA;
+            }
+            .hide {
+                color: #12073A;
+            }
+            .delay_one {
+                transition-delay: .1s;
+            }
+            .delay_two {
+                transition-delay: 1s;
+            }
+            .delay_three {
+                transition-delay: 2s;
+            }
+            .delay_four {
+                transition-delay: 3s;
             }
             
         </style>
@@ -72,7 +87,15 @@
                     return !this.er_helg();
                 }
                 er_ferie() {
-                    return false;
+                    return this.er_jul() || this.er_sommerferie_ish();
+                }
+                er_jul() {
+                    let month = this.dato.getMonth();
+                    let day = this.dato.getDate();
+                    return (month == 11 && day > 22) || (month == 0 && day < 2);
+                }
+                er_sommerferie_ish() {
+                    return this.dato.getMonth() == 6;
                 }
                 somStreng() {
                     return `${this.dagNavn()} - ${this.er_helg()}`
@@ -120,10 +143,6 @@
                     }
                     return res;
                 }
-               
-                toggle_arbeidsdager() {
-                    document.getElementById("arbeidsdager").classList.toggle("gjemmeseg");
-                }
 
                 buildDOM() {
                     let parent = document.createElement("div");
@@ -138,7 +157,7 @@
                     let astrx = document.createElement("span");
                     astrx.classList.add("astrx", "tall", "tekstgreie");
                     astrx.innerHTML = "*";
-                    astrx.onclick = this.toggle_arbeidsdager;
+                    astrx.onclick = toggle_arbeidsdager;
                     tall.appendChild(astrx);
                     parent.appendChild(tall);
                     let etter_tall = document.createElement("span");
@@ -147,15 +166,38 @@
                     parent.appendChild(etter_tall);
 
                     this.utviklingstidslinje = this.lag_tidslinje(this.startDate, this.endDate);
-                    this.logg_tidslinje();
+                    
+                    // this.logg_tidslinje();
+
+                    let arbeidsdager_count = this.tell_arbeidsdager();
+                    let arbeidstimer = arbeidsdager_count * 7.5;
+                    let hele_teamet = 10;
+                    let hele_teamet_timer = hele_teamet * arbeidstimer;
 
                     let arbeidsdager = document.createElement("div");
-                    arbeidsdager.classList.add("tekstgreie", "arbeidsdager", "gjemmeseg");
+                    arbeidsdager.classList.add("tekstgreie", "arbeidsdager", "hide", "delay_one");
                     arbeidsdager.setAttribute("id", "arbeidsdager");
-                    arbeidsdager.innerHTML = `Det er jo ${this.tell_arbeidsdager()} arbeidsdager!`
+                    arbeidsdager.innerHTML = `Det er jo ${this.tell_arbeidsdager()} arbeidsdager`
 
+                    let arbeidstimer_div = document.createElement("div");
+                    arbeidstimer_div.classList.add("tekstgreie", "arbeidsdager", "hide", "delay_two");
+                    arbeidstimer_div.setAttribute("id", "arbeidsdager2");
+                    arbeidstimer_div.innerHTML = `eller ${arbeidstimer} timer med kalendertid`
+
+                    let team_div = document.createElement("div");
+                    team_div.classList.add("tekstgreie", "arbeidsdager", "hide", "delay_three");
+                    team_div.setAttribute("id", "arbeidsdager3");
+                    team_div.innerHTML = `og vi er i snitt ${hele_teamet} mennesker i arbeid i snitt`
+
+                    let team_timer_div = document.createElement("div");
+                    team_timer_div.classList.add("tekstgreie", "arbeidsdager", "hide", "delay_four");
+                    team_timer_div.setAttribute("id", "arbeidsdager4");
+                    team_timer_div.innerHTML = `som betyr at vi har investert ${hele_teamet_timer} arbeidstimer i dette :)`
 
                     parent.appendChild(arbeidsdager);
+                    parent.appendChild(arbeidstimer_div);
+                    parent.appendChild(team_div);
+                    parent.appendChild(team_timer_div);
 
                     return parent;
                 }
@@ -171,7 +213,11 @@
                 }
 
                 logg_tidslinje() {
-                    console.log(`tidslinjen har ${this.tell_arbeidsdager()} arbeidsdager`);
+                    this.utviklingstidslinje
+                        .filter((dag) => dag.er_ferie())
+                        .forEach((dag) => {
+                        console.log(`${dag.dato} => ${dag.er_ferie()}`)
+                    });
                 }
 
                 tell_arbeidsdager() {
@@ -181,6 +227,17 @@
 
             }
 
+            function show_hide(element_id) {
+                document.getElementById(element_id).classList.toggle("show");
+                document.getElementById(element_id).classList.toggle("hide");
+            }
+
+            function toggle_arbeidsdager() {
+               show_hide("arbeidsdager");
+               show_hide("arbeidsdager2");
+               show_hide("arbeidsdager3");
+               show_hide("arbeidsdager4");
+            }
             function add(date, prefix, postfix) {
                 document.getElementById("karusell").appendChild(new Periode(date, new Date(Date.now()), prefix, postfix).buildDOM());
             }               
