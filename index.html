@@ -16,7 +16,8 @@
                 align-items: center;
                 justify-content: center;
                 font-size: 5em;
-                background-color: #13073A;
+                background-image: url("harts.png");
+                background-size: cover;
                 padding-left: 2em;
                 padding-right: 2em;
             }
@@ -50,22 +51,22 @@
                 transition-duration: 1s;
             }
             .show {
-                color: #FFE3AA;
+                color: #FFE3AAFF;
             }
             .hide {
-                color: #12073A;
+                color: #12073A00;
             }
             .delay_one {
-                transition-delay: .1s;
+                transition-delay: .5s;
             }
             .delay_two {
-                transition-delay: 1s;
-            }
-            .delay_three {
                 transition-delay: 2s;
             }
+            .delay_three {
+                transition-delay: 4s;
+            }
             .delay_four {
-                transition-delay: 3s;
+                transition-delay: 6s;
             }
             
         </style>
@@ -175,22 +176,22 @@
                     let arbeidsdager = document.createElement("div");
                     arbeidsdager.classList.add("tekstgreie", "arbeidsdager", "hide", "delay_one");
                     arbeidsdager.setAttribute("id", "arbeidsdager");
-                    arbeidsdager.innerHTML = `Det er jo ${this.tell_arbeidsdager()} arbeidsdager`
+                    arbeidsdager.innerHTML = `med gulrot, pastinakk, løk og hvitløk`
 
                     let arbeidstimer_div = document.createElement("div");
                     arbeidstimer_div.classList.add("tekstgreie", "arbeidsdager", "hide", "delay_two");
                     arbeidstimer_div.setAttribute("id", "arbeidsdager2");
-                    arbeidstimer_div.innerHTML = `eller ${arbeidstimer} timer med kalendertid`
+                    arbeidstimer_div.innerHTML = `og en sjy av Jacobs Utvalgte grønnsakskraft`
 
                     let team_div = document.createElement("div");
                     team_div.classList.add("tekstgreie", "arbeidsdager", "hide", "delay_three");
                     team_div.setAttribute("id", "arbeidsdager3");
-                    team_div.innerHTML = `og vi er i snitt ${hele_teamet} mennesker i arbeid i snitt`
+                    team_div.innerHTML = `og det står en flaske rødt og venter i på tredje trinn i kjellertrappa`
 
                     let team_timer_div = document.createElement("div");
                     team_timer_div.classList.add("tekstgreie", "arbeidsdager", "hide", "delay_four");
                     team_timer_div.setAttribute("id", "arbeidsdager4");
-                    team_timer_div.innerHTML = `som betyr at vi har investert ${hele_teamet_timer} arbeidstimer i dette :)`
+                    team_timer_div.innerHTML = `<3 vi skal kose oss på ekte <3`
 
                     parent.appendChild(arbeidsdager);
                     parent.appendChild(arbeidstimer_div);
@@ -245,7 +246,7 @@
     <body>
         <section id="karusell"></section>
         <script>
-            add(new Date("2023-11-14T15:37:00.000+01:00"), "Tilkommen inntekt er ", " dager gammel")
+            add(new Date("2023-11-14T15:37:00.000+01:00"), "Tilkommen inntekt har mørna i ", " dager i crock-poten")
           </script>
     </body>
 </html>
